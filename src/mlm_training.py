@@ -3,33 +3,19 @@ from ray.tune.search.hyperopt import HyperOptSearch
 from ray.tune.schedulers import PopulationBasedTraining
 from utils import *
 from parsing import parse_mlm
-
+from configs import MLM_CFG
 import os
-import numpy as np
 
 args = parse_mlm()
+MLM_CFG.set_args(args)
 
-class CFG:
-    MODEL_NAME = args.model_name
-    
-    EPOCHS = args.num_epochs
-    TRAIN_BATCH_SIZE = args.train_batch_size
-    VAL_BATCH_SIZE = args.val_batch_size
-    WEIGHT_DECAY = args.weight_decay
-    LEARNING_RATE_START = args.learning_rate_start
-    
-    MAX_LEN = args.max_len
-    BLOCK_SIZE = args.block_size
-    
-    SEED = args.seed
-
-set_seed_(CFG.SEED)
+set_seed_(MLM_CFG.SEED)
 device = set_device()
 
 dataset_mlm = load_dataset_from_huggingface(DATASET_PATH, CONFIG_NAME)
 dataset_mlm = preprocess_dataset_for_mlm(dataset_mlm)
 
-tokenizer = AutoTokenizer.from_pretrained( CFG.MODEL_NAME, ) #max_length=CFG.MAX_LEN )
+tokenizer = AutoTokenizer.from_pretrained( MLM_CFG.MODEL_NAME, ) #max_length=MLM_CFG.MAX_LEN )
 
 tokenize_kwargs = {'tokenizer': tokenizer}
 tokenized_datasets = dataset_mlm.map(
@@ -40,24 +26,24 @@ tokenized_datasets = dataset_mlm.map(
 )
 data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer)
 
-group_kwargs = {'block_size': CFG.BLOCK_SIZE}
+group_kwargs = {'block_size': MLM_CFG.BLOCK_SIZE}
 tokenized_labeled_datasets = tokenized_datasets.map(
     group_texts, 
     batched=True, 
     fn_kwargs=group_kwargs
 )
-model = AutoModelForMaskedLM.from_pretrained(CFG.MODEL_NAME)
+model = AutoModelForMaskedLM.from_pretrained(MLM_CFG.MODEL_NAME)
 
 training_args = TrainingArguments(
     evaluation_strategy='epoch',
     save_strategy='epoch',
     logging_strategy='epoch',
-    learning_rate=CFG.LEARNING_RATE_START,
-    num_train_epochs=CFG.EPOCHS,
-    weight_decay=CFG.WEIGHT_DECAY,
-    output_dir=os.path.join('./masked_lm', CFG.MODEL_NAME),
+    learning_rate=MLM_CFG.LEARNING_RATE_START,
+    num_train_epochs=MLM_CFG.EPOCHS,
+    weight_decay=MLM_CFG.WEIGHT_DECAY,
+    output_dir=os.path.join('masked_lm', MLM_CFG.MODEL_NAME),
     fp16=True,
-    seed=CFG.SEED,
+    seed=MLM_CFG.SEED,
 )
 
 trainer = Trainer(
