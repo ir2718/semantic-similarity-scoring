@@ -1,1 +1,1 @@
-# sts
+# semantic-similarity-scoring
