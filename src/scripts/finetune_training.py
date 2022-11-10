@@ -1,5 +1,5 @@
 from transformers import AutoTokenizer, AutoModel, AutoModelForSequenceClassification, AutoConfig, DataCollatorWithPadding, TrainingArguments, Trainer
-from ray.tune.suggest.hyperopt import HyperOptSearch
+from ray.tune.search.hyperopt import HyperOptSearch
 from ray.tune.schedulers import PopulationBasedTraining
 from utils import *
 from parsing import parse_fine_tune
@@ -15,7 +15,9 @@ device = set_device()
 dataset = load_dataset_from_huggingface(DATASET_PATH, CONFIG_NAME)
 dataset = preprocess_dataset_for_finetuning(dataset)
 
-tokenizer = AutoTokenizer.from_pretrained(END2END_CFG.MODEL_NAME, max_length=END2END_CFG.MAX_LEN)
+tokenizer = AutoTokenizer.from_pretrained(
+    END2END_CFG.MODEL_NAME
+)
 
 tokenizer_kwargs={'tokenizer': tokenizer}
 tokenized_datasets = dataset.map(
@@ -37,7 +39,7 @@ training_args_fine_tune = TrainingArguments(
     per_device_train_batch_size=END2END_CFG.TRAIN_BATCH_SIZE,
     per_device_eval_batch_size=END2END_CFG.VAL_BATCH_SIZE,
     num_train_epochs=END2END_CFG.EPOCHS,
-    output_dir=os.path.join('finetune', END2END_CFG.MODEL_NAME),
+    output_dir=os.path.join('../finetune', END2END_CFG.MODEL_NAME),
     weight_decay=END2END_CFG.WEIGHT_DECAY,
     lr_scheduler_type=END2END_CFG.SCHEDULER,
     warmup_ratio=END2END_CFG.WARMUP_RATIO,

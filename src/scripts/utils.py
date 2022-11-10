@@ -80,7 +80,7 @@ def preprocess_dataset_for_finetuning(datasets):
 
 def tokenize_function(examples, **fn_kwargs):
     tokenizer = fn_kwargs['tokenizer']
-    result = tokenizer(examples['sentence'])
+    result = tokenizer(examples['sentence'], truncation=True)
     if tokenizer.is_fast:
         result['word_ids'] = [result.word_ids(i) for i in range(len(result['input_ids']))]
     return result

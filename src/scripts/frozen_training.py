@@ -15,7 +15,9 @@ device = set_device()
 dataset = load_dataset_from_huggingface(DATASET_PATH, CONFIG_NAME)
 dataset = preprocess_dataset_for_finetuning(dataset)
 
-tokenizer = AutoTokenizer.from_pretrained(FROZEN_CFG.MODEL_NAME, max_length=FROZEN_CFG.MAX_LEN)
+tokenizer = AutoTokenizer.from_pretrained(
+    FROZEN_CFG.MODEL_NAME
+)
 
 tokenizer_kwargs = {'tokenizer': tokenizer}
 tokenized_datasets = dataset.map(
@@ -35,7 +37,7 @@ training_args = TrainingArguments(
     per_device_train_batch_size=FROZEN_CFG.TRAIN_BATCH_SIZE,
     per_device_eval_batch_size=FROZEN_CFG.VAL_BATCH_SIZE,
     num_train_epochs=FROZEN_CFG.EPOCHS,
-    output_dir=os.path.join('frozen', FROZEN_CFG.MODEL_NAME),
+    output_dir=os.path.join('../frozen', FROZEN_CFG.MODEL_NAME),
     weight_decay=FROZEN_CFG.WEIGHT_DECAY,
     lr_scheduler_type=FROZEN_CFG.SCHEDULER,
     warmup_ratio=FROZEN_CFG.WARMUP_RATIO,

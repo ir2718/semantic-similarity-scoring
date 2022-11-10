@@ -9,7 +9,6 @@ class MLM_CFG:
         MLM_CFG.WEIGHT_DECAY = args.weight_decay
         MLM_CFG.LEARNING_RATE_START = args.learning_rate_start
         
-        MLM_CFG.MAX_LEN = args.max_len
         MLM_CFG.BLOCK_SIZE = args.block_size
         
         MLM_CFG.SEED = args.seed
@@ -28,8 +27,6 @@ class FROZEN_CFG:
         FROZEN_CFG.WARMUP_RATIO = args.warmup_ratio
         FROZEN_CFG.SCHEDULER = args.scheduler
         
-        FROZEN_CFG.MAX_LEN = args.max_len
-
         FROZEN_CFG.SEED = args.seed
 
 class END2END_CFG:
@@ -46,6 +43,4 @@ class END2END_CFG:
         END2END_CFG.WARMUP_RATIO = args.warmup_ratio
         END2END_CFG.SCHEDULER = args.scheduler
         
-        END2END_CFG.MAX_LEN = args.max_len
-
         END2END_CFG.SEED = args.seed
