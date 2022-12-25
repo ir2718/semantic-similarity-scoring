@@ -26,11 +26,10 @@
 ### End2End finetuning
 - finetuning for 5 epochs or using early stopping
 
+### Ensembling the finetuned models
+- using a voting classifier or gradient boosting algorithms
 ---------------------------------------
 - cosine annealing/linear scheduling for the learning rates with warmup steps
 - FP16 training throughout all the steps to reduce the model training time
 - regularization will be done using weight decay
 - using pearsons' and spearmans' coefficient for evaluation
-
-### Ensembling the finetuned models
-- using a voting classifier or gradient boosting algorithms
