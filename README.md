@@ -14,20 +14,23 @@
 
 ## Project notes:
 
-### 1. Masked language modeling
-Since this project uses a private dataset that comprises of students' theses the pretrained models will behave poorly on the language modeling task. In order to tackle this domain adaptation will be used, in the form of MLM pretraining.
+### Hyperparameter optimization
+- will be done using [Population-based training](https://arxiv.org/pdf/1711.09846.pdf)
 
-### 2. Finetuning with the frozen encoder
-Next up, the task to be solved is determining the semantic textual similarity of pairs of theses/summaries/abstracts. Besides improving training time, this technique will learn the weights for the regression head.
+### Masked language modeling
+- might be useful, but will be left out for now because of computation cost
 
-### 3. End2End finetuning
-The final step for each of these models will be finetuning the whole model, including the encoder. This will be done using a significantly lower learning rate compared to the last step.
+### Finetuning with the frozen encoder
+- finetuning for 10 epochs or using early stopping
 
-- Each of the steps will feature hyperparameter tuning using [Population-based training](https://arxiv.org/pdf/1711.09846.pdf)
-- Cosine annealing/linear scheduling for the learning rates with warmup steps
+### End2End finetuning
+- finetuning for 5 epochs or using early stopping
+
+---------------------------------------
+- cosine annealing/linear scheduling for the learning rates with warmup steps
 - FP16 training throughout all the steps to reduce the model training time
-- Regularization will be done using weight decay
-- Each model will be evaluated using Pearsons' and Spearmans' coefficient as these are the default metrics for the task
+- regularization will be done using weight decay
+- using pearsons' and spearmans' coefficient for evaluation
 
-### 4. Ensembling the finetuned models
-Finally, the last step will be combining the finetuned models using some kind of ensemble algorithm (voting, stacking, bagging, boosting).
+### Ensembling the finetuned models
+- using a voting classifier or gradient boosting algorithms
