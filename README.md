@@ -1,16 +1,16 @@
 # semantic-similarity-scoring
 
 ## SOTA models for this task on STSB:
-- [SMART-RoBERTa Large](https://arxiv.org/pdf/1911.03437v5.pdf)
-- [StructBERT](https://arxiv.org/pdf/1908.04577v3.pdf)
-- [MNet-Sim](https://arxiv.org/ftp/arxiv/papers/2111/2111.05412.pdf)
-- [T5-11B](https://arxiv.org/pdf/1910.10683v3.pdf)
-- [XLNet](https://arxiv.org/pdf/1906.08237v2.pdf)
-- [RoBERTa](https://arxiv.org/pdf/1907.11692v1.pdf)
-- [Vector-wise](https://arxiv.org/pdf/2208.07339v2.pdf)
-- [EFL](https://arxiv.org/pdf/2104.14690v1.pdf)
-- [Ernie 2.0 Large](https://arxiv.org/pdf/1907.12412v2.pdf)
-- [DistilBERT](https://arxiv.org/pdf/1910.01108v4.pdf)
+- [Turing ULR v6](https://arxiv.org/abs/2210.14867)
+- Vega v1
+- [Turing NLR v5](https://arxiv.org/abs/2204.06644)
+- DeBERTa + CLEVER
+- [ERNIE](https://github.com/PaddlePaddle/ERNIE)
+- [StructBERT + CLEVER](https://github.com/alibaba/AliceMind)
+- [DeBERTa / TuringNLRv4](https://github.com/microsoft/DeBERTa)
+- MaxALBERT + DKM
+- ALVERT + DAAF + NAS
+- [T5](https://github.com/google-research/text-to-text-transfer-transformer)
 
 ## Project notes:
 
