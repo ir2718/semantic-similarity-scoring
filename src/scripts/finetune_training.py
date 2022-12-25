@@ -13,7 +13,6 @@ set_seed_(END2END_CFG.SEED)
 device = set_device()
 
 dataset = load_dataset_from_huggingface(DATASET_PATH, CONFIG_NAME)
-dataset = preprocess_dataset_for_finetuning(dataset)
 
 tokenizer = AutoTokenizer.from_pretrained(
     END2END_CFG.MODEL_NAME
@@ -25,6 +24,7 @@ tokenized_datasets = dataset.map(
     batched=True,
     fn_kwargs=tokenizer_kwargs
 )
+
 data_collator = DataCollatorWithPadding(tokenizer=tokenizer)
 
 config = AutoConfig.from_pretrained(END2END_CFG.MODEL_NAME)

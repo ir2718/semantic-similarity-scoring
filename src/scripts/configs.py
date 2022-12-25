@@ -26,6 +26,8 @@ class FROZEN_CFG:
         FROZEN_CFG.LEARNING_RATE_START = args.learning_rate_start
         FROZEN_CFG.WARMUP_RATIO = args.warmup_ratio
         FROZEN_CFG.SCHEDULER = args.scheduler
+        FROZEN_CFG.MAX_LEN = args.max_len
+        FROZEN_CFG.OPTIM = args.optim
         
         FROZEN_CFG.SEED = args.seed
 
@@ -42,5 +44,7 @@ class END2END_CFG:
         END2END_CFG.LEARNING_RATE_START = args.learning_rate_start
         END2END_CFG.WARMUP_RATIO = args.warmup_ratio
         END2END_CFG.SCHEDULER = args.scheduler
+        END2END_CFG.OPTIM = args.optim
         
+
         END2END_CFG.SEED = args.seed

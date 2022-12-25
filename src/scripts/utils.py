@@ -32,12 +32,15 @@ def unfreeze_encoder(model):
         p.requires_grad = True
 
 def compute_metrics(eval_preds):
-    output, labels = eval_preds
-    output = output.reshape(-1)
+    output = eval_preds.predictions
+    labels = eval_preds.label_ids
     return {
-        'pearson_r': pearsonr(output, labels)[0],
-        'spearman_r': spearmanr(output, labels)[0]
+        'pearson_r': pearsonr(output.reshape(-1), labels)[0],
+        'spearman_r': spearmanr(output.reshape(-1), labels)[0]
     }
+
+def compute_objective(eval_dict):
+    return eval_dict['eval_spearman_r']
 
 def load_dataset_from_disk(train_path, test_path, validation_path, format_='csv'):
     cwd = os.getcwd()
@@ -73,16 +76,16 @@ def preprocess_dataset_for_mlm(dataset):
     return dataset_mlm
 
 def preprocess_dataset_for_finetuning(datasets):
-    datasets = datasets.remove_columns(['sentence1', 'sentence2', 'idx'])
-    datasets = datasets.rename_columns({'label':'labels'})
-    datasets.set_format('torch')
     return datasets
 
 def tokenize_function(examples, **fn_kwargs):
-    tokenizer = fn_kwargs['tokenizer']
-    result = tokenizer(examples['sentence'], truncation=True)
-    if tokenizer.is_fast:
-        result['word_ids'] = [result.word_ids(i) for i in range(len(result['input_ids']))]
+    result = fn_kwargs['tokenizer'](
+        examples['sentence1'], 
+        examples['sentence2'], 
+        max_length=fn_kwargs['max_len'],
+    )
+    #if tokenizer.is_fast:
+    #    result['word_ids'] = [result.word_ids(i) for i in range(len(result['input_ids']))]
     return result
 
 def group_texts(examples, **fn_kwargs):

@@ -8,6 +8,7 @@ def _parse():
     parser.add_argument('--val_batch_size', type=int, default=64)
     parser.add_argument('--weight_decay', type=float, default=0.001)
     parser.add_argument('--learning_rate_start', type=float, default=1e-4)
+    parser.add_argument('--optim', type=str, default='adamw_torch')
     parser.add_argument('--max_len', type=int, default=512)
     parser.add_argument('--seed', type=int, default=42)
     return parser
