@@ -1,14 +1,12 @@
 import os
 import numpy as np
 import torch
-
+import pandas as pd
 import datasets
+import json
+import pandas as pd
 
 from scipy.stats import pearsonr, spearmanr
-
-TRAIN_PATH = 'dataset\STS-B\original\sts-train.tsv'
-TEST_PATH = 'dataset\STS-B\original\sts-test.tsv'
-VALIDATION_PATH = 'dataset\STS-B\original\sts-dev.tsv'
 
 DATASET_PATH = 'glue'
 CONFIG_NAME = 'stsb'
@@ -20,8 +18,47 @@ def set_seed_(seed):
     torch.cuda.manual_seed(seed)
     torch.backends.cudnn.deterministic = True
 
+def _load_test_labels(dataset_path):
+    f = open(f'{dataset_path}/sts-test.tsv', 'r', encoding='utf-8')
+
+    l = []
+    for x in f:
+        curr_line = x.split('\t')
+        l.append(np.float32(curr_line[4]))
+    
+    labels = np.array(l)
+    df_labels = pd.DataFrame.from_dict({'label':labels})
+    hf_df = datasets.Dataset.from_pandas(df_labels)
+    return hf_df
+
 def set_device():
     return 'cuda' if torch.cuda.is_available() else 'cpu'
+
+
+def predict_and_save_results(trainer, tokenized_datasets, output_dir, best_run):
+    with open(os.path.join(output_dir, 'hyperparameters.txt'), 'w') as hyperparams:
+        hyperparams.write(json.dumps(best_run.hyperparameters))
+
+    train_res = trainer.predict(tokenized_datasets['train'], metric_key_prefix='train')
+    validation_res = trainer.predict(tokenized_datasets['validation'], metric_key_prefix='validation')
+    test_res = trainer.predict(tokenized_datasets['test'])
+
+    train_preds_df = pd.DataFrame.from_dict({'preds': train_res.predictions.reshape(-1)})
+    validation_preds_df = pd.DataFrame.from_dict({'preds': validation_res.predictions.reshape(-1)})
+    test_preds_df = pd.DataFrame.from_dict({'preds': test_res.predictions.reshape(-1)})
+
+    train_preds_df.to_csv(os.path.join(output_dir, 'train_res.csv'), index=False)
+    validation_preds_df.to_csv(os.path.join(output_dir, 'validation_res.csv'), index=False)
+    test_preds_df.to_csv(os.path.join(output_dir, 'test_res.csv'), index=False)
+
+    metrics_d = {**train_res.metrics, **validation_res.metrics, **test_res.metrics}
+    splits = ['train', 'validation', 'test']
+    metrics = ['loss', 'spearman_r', 'pearson_r']
+    strs = [[f'{s}_{m}' for m in metrics] for s in splits]
+    flatten_strs = [i for subl in strs for i in subl]
+    metrics_d = {k:v for k, v in metrics_d.items() if k in flatten_strs}
+    with open(os.path.join(output_dir, 'metrics.txt'), 'w') as metric_info:
+        metric_info.write(json.dumps(metrics_d))
 
 def freeze_encoder(model):
     for p in model.base_model.encoder.parameters():
@@ -40,27 +77,36 @@ def compute_metrics(eval_preds):
     }
 
 def compute_objective(eval_dict):
-    return eval_dict['eval_spearman_r']
+    return eval_dict['pearson_r']
 
-def load_dataset_from_disk(train_path, test_path, validation_path, format_='csv'):
-    cwd = os.getcwd()
-    dataset = datasets.load_dataset(
-        format_, 
-        data_files={
-            'train': os.path.join(cwd, train_path),
-            'validation': os.path.join(cwd, validation_path),
-            'test': os.path.join(cwd, test_path)
-        },
-        encoding='utf-8'
-    )
-    return dataset
+def load_stsb_dataset_from_disk(dataset_path):
+    cols = ['dataset_type', 'dataset', 'split', 'id', 'label', 'sentence1', 'sentence2']
+
+    train = pd.read_csv(f'{dataset_path}/sts-train.tsv', sep='\t', header=None, engine='python', on_bad_lines='skip', names=cols)
+    validation = pd.read_csv(f'{dataset_path}/sts-dev.tsv', sep='\t', header=None, engine='python', on_bad_lines='skip', names=cols)
+    test = pd.read_csv(f'{dataset_path}/sts-test.tsv', sep='\t', header=None, engine='python',  on_bad_lines='skip', names=cols)
+
+    train = datasets.Dataset.from_pandas(train)
+    validation = datasets.Dataset.from_pandas(validation)
+    test = datasets.Dataset.from_pandas(test)
+
+    dataset_dict = datasets.DatasetDict({
+        'train': train,
+        'validation':validation,
+        'test':test,
+    })
+    return dataset_dict
 
 
 def _get_all_sentences_list(dataset, split):
     return dataset[split]['sentence1'][:] + dataset[split]['sentence2'][:]
 
-def load_dataset_from_huggingface(dataset_path, config_name):
+def load_dataset_from_huggingface(dataset_path, config_name, label_dir):
     dataset = datasets.load_dataset(dataset_path, config_name)
+
+    test_labels = _load_test_labels(label_dir)
+    dataset['test'] = dataset['test'].remove_columns('label')
+    dataset['test'] = dataset['test'].add_column(name='label', column=test_labels['label'])
     return dataset
 
 def preprocess_dataset_for_mlm(dataset):
@@ -82,10 +128,8 @@ def tokenize_function(examples, **fn_kwargs):
     result = fn_kwargs['tokenizer'](
         examples['sentence1'], 
         examples['sentence2'], 
-        max_length=fn_kwargs['max_len'],
+        truncation=True
     )
-    #if tokenizer.is_fast:
-    #    result['word_ids'] = [result.word_ids(i) for i in range(len(result['input_ids']))]
     return result
 
 def group_texts(examples, **fn_kwargs):
@@ -100,4 +144,4 @@ def group_texts(examples, **fn_kwargs):
         for k, t in concatenated_examples.items()
     }
     result["labels"] = result["input_ids"].copy()
-    return result
+    return results

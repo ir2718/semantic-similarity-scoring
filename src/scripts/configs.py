@@ -12,6 +12,7 @@ class MLM_CFG:
         MLM_CFG.BLOCK_SIZE = args.block_size
         
         MLM_CFG.SEED = args.seed
+        FROZEN_CFG.PATIENCE = args.patience
 
 class FROZEN_CFG:
     @staticmethod
@@ -26,10 +27,13 @@ class FROZEN_CFG:
         FROZEN_CFG.LEARNING_RATE_START = args.learning_rate_start
         FROZEN_CFG.WARMUP_RATIO = args.warmup_ratio
         FROZEN_CFG.SCHEDULER = args.scheduler
-        FROZEN_CFG.MAX_LEN = args.max_len
         FROZEN_CFG.OPTIM = args.optim
+        FROZEN_CFG.OPT_METRIC = args.opt_metric
         
+
         FROZEN_CFG.SEED = args.seed
+        FROZEN_CFG.PATIENCE = args.patience
+
 
 class END2END_CFG:
     @staticmethod
@@ -45,6 +49,7 @@ class END2END_CFG:
         END2END_CFG.WARMUP_RATIO = args.warmup_ratio
         END2END_CFG.SCHEDULER = args.scheduler
         END2END_CFG.OPTIM = args.optim
+        END2END_CFG.OPT_METRIC = args.opt_metric
         
-
         END2END_CFG.SEED = args.seed
+        END2END_CFG.PATIENCE = args.patience
