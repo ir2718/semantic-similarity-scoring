@@ -1,6 +1,6 @@
 # semantic-similarity-scoring
 
-## WORK IN PROGRESS ##
+# WORK IN PROGRESS #
 
 ## SOTA models for this task on STSB:
 - [Turing ULR v6](https://arxiv.org/abs/2210.14867)
