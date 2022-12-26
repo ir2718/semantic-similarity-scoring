@@ -25,9 +25,9 @@
 ### Finetuning with the frozen encoder
 - finetuning for 10 epochs or using early stopping
 
-| Model used      | Train set     | Validation  set | Test set     |
+| **Model used**      | **Train set**     | **Validation  set** | **Test set**     |
 | --------------- | ------------- | --------------- | ------------ |
-| bert-base-cased | 0.945/0.948   | 0.8505/0.843    | 0.742/0.709  |
+| bert-base-cased | 0.945/0.948   | 0.851/0.843     | 0.742/0.709  |
 
 ### End2End finetuning
 - finetuning for 5 epochs or using early stopping
