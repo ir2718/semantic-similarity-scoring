@@ -1,5 +1,7 @@
 # semantic-similarity-scoring
 
+## WORK IN PROGRESS ##
+
 ## SOTA models for this task on STSB:
 - [Turing ULR v6](https://arxiv.org/abs/2210.14867)
 - Vega v1
@@ -22,6 +24,10 @@
 
 ### Finetuning with the frozen encoder
 - finetuning for 10 epochs or using early stopping
+
+| Model used      | Train set     | Validation  set | Test set     |
+| --------------- | ------------- | --------------- | ------------ |
+| bert-base-cased | 0.945/0.948   | 0.8505/0.843    | 0.742/0.709  |
 
 ### End2End finetuning
 - finetuning for 5 epochs or using early stopping
