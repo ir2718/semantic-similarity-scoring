@@ -16,10 +16,11 @@
 
 ## Project notes:
 
-## Baselines
+### Baselines
 - supervised: linear regression and SVM with averaged word2vec representations of words
 - unsupervised: cosine similarity between averaged word2vec representations of words
 - no hyperparameter optimization
+
 | **Model used**      | **Train set**     | **Validation  set** | **Test set**     |
 | ------------------- | ----------------- | ------------------- | ---------------- |
 | Cosine similarity   | 0.459/0.462       | 0.478/0.540         | 0.367/0.388      |
@@ -27,7 +28,7 @@
 | SVM                 | 0.585/0.576       | 0.258/0.240         | 0.330/0.301      | 
 
 ### Hyperparameter optimization
-- will be done using [Population-based training](https://arxiv.org/pdf/1711.09846.pdf)
+- will be done using [Population-based training](https://arxiv.org/pdf/1711.09846.pdf) or using a grid search
 
 ### Masked language modeling
 - might be useful, but will be left out for now because of computation cost
