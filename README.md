@@ -28,19 +28,19 @@
 | SVM                 | 0.585/0.576       | 0.258/0.240         | 0.330/0.301      | 
 
 ### Hyperparameter optimization
-- will be done using [Population-based training](https://arxiv.org/pdf/1711.09846.pdf) or using a grid search
+- done using [Population-based training](https://arxiv.org/pdf/1711.09846.pdf) or hand tuning
+- when using PBT the same values for the learning rate and weight decay are used: 
+```
+  learning_rate: [1e-3, 5e-4, 1e-4, 5e-5, 1e-5]
+  weight_decay: [1e-2, 1e-3, 1e-4]
+```
+- the batch size grid used always contains exactly 3 values and varies depending on the size of the model
 
 ### Masked language modeling
 - might be useful, but will be left out for now because of computation cost
 
 ### Finetuning with the frozen encoder
 - finetuning for 10 epochs or using early stopping
-- each hyperparameter search uses the same values for the learning rate and weight decay: 
-```
-  learning_rate: [1e-3, 5e-4, 1e-4, 5e-5, 1e-5]
-  weight_decay: [1e-2, 1e-3, 1e-4]
-```
-- the batch size grid used always contains exactly 3 values and varies depending on the size of the model
 
 | **Model**           | **Train set**     | **Validation  set** | **Test set**     | **Batch size** | **Learning rate** | **Weight decay** | **Batch size grid** |
 | ------------------- | ----------------- | ------------------- | ---------------- |--------------- | ----------------- | ---------------- | ------------------- |
