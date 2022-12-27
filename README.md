@@ -16,6 +16,16 @@
 
 ## Project notes:
 
+## Baselines
+- supervised: linear regression and SVM with averaged word2vec representations of words
+- unsupervised: cosine similarity between averaged word2vec representations of words
+- no hyperparameter optimization
+| **Model used**      | **Train set**     | **Validation  set** | **Test set**     |
+| ------------------- | ----------------- | ------------------- | ---------------- |
+| Cosine similarity   | 0.459/0.462       | 0.478/0.540         | 0.367/0.388      |
+| Linear regression   | 0.440/0.425       | 0.119/0.118         | 0.194/0.193      |
+| SVM                 | 0.585/0.576       | 0.258/0.240         | 0.330/0.301      | 
+
 ### Hyperparameter optimization
 - will be done using [Population-based training](https://arxiv.org/pdf/1711.09846.pdf)
 
@@ -24,10 +34,18 @@
 
 ### Finetuning with the frozen encoder
 - finetuning for 10 epochs or using early stopping
+- each hyperparameter search uses the same values for the learning rate and weight decay: 
+```
+  learning_rate: [1e-3, 5e-4, 1e-4, 5e-5, 1e-5]
+  weight_decay: [1e-2, 1e-3, 1e-4]
+```
+- the batch size grid used always contains exactly 3 values and varies depending on the size of the model
 
-| **Model used**      | **Train set**     | **Validation  set** | **Test set**     |
-| --------------- | ------------- | --------------- | ------------ |
-| bert-base-cased | 0.945/0.948   | 0.851/0.843     | 0.742/0.709  |
+| **Model**           | **Train set**     | **Validation  set** | **Test set**     | **Batch size** | **Learning rate** | **Weight decay** | **Batch size grid** |
+| ------------------- | ----------------- | ------------------- | ---------------- |--------------- | ----------------- | ---------------- | ------------------- |
+| BERT base cased     | 0.945/0.948       | 0.851/0.843         | 0.742/0.709      | 8              | 5e-4              | 1e-2             | [8, 16, 32]         |
+| XLM RoBERTa base    |                   |                     |                  |                |                   |                  | [8, 16, 24]         |
+|                     |                   |                     |                  |                |                   |                  |                     |
 
 ### End2End finetuning
 - finetuning for 5 epochs or using early stopping
