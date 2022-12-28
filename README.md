@@ -45,7 +45,7 @@
 | **Model**           | **Train set**     | **Validation  set** | **Test set**     | **Batch size** | **Learning rate** | **Weight decay** | **Batch size grid** |
 | ------------------- | ----------------- | ------------------- | ---------------- |--------------- | ----------------- | ---------------- | ------------------- |
 | BERT base cased     | 0.945/0.948       | 0.851/0.843         | 0.742/0.709      | 8              | 5e-4              | 1e-2             | [8, 16, 32]         |
-| XLM RoBERTa base    |                   |                     |                  |                |                   |                  | [8, 16, 24]         |
+| RoBERTa base        |                   |                     |                  |                |                   |                  |                     |
 |                     |                   |                     |                  |                |                   |                  |                     |
 
 ### End2End finetuning
