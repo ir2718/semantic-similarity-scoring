@@ -45,8 +45,8 @@
 | **Model**           | **Train set**     | **Validation  set** | **Test set**     | **Batch size** | **Learning rate** | **Weight decay** | **Batch size grid** |
 | ------------------- | ----------------- | ------------------- | ---------------- |--------------- | ----------------- | ---------------- | ------------------- |
 | BERT base cased     | 0.945/0.948       | 0.851/0.843         | 0.742/0.709      | 8              | 5e-4              | 1e-2             | [8, 16, 32]         |
-| RoBERTa base        |                   |                     |                  |                |                   |                  |                     |
-|                     |                   |                     |                  |                |                   |                  |                     |
+| RoBERTa base        | 0.945/0.935       | 0.799/0.799         | 0.766/0.748      | 8              | 5e-4              | 1e-2             | [8, 16, 32]         |
+| DistilRoBERTa base  |                   |                     |                  |                |                   |                  |                     |
 
 ### End2End finetuning
 - finetuning for 5 epochs or using early stopping
