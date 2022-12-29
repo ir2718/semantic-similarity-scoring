@@ -1,5 +1,5 @@
-src/.ipynb_checkpoints
-src/__pycache__
+src/.ipynb_checkpoints/
+src/__pycache__/
 src/frozen/*/*/
 src/notebooks/.ipynb_checkpoints
 src/scripts/.ipynb_checkpoints
