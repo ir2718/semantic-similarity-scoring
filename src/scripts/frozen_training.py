@@ -35,8 +35,6 @@ def model_init():
     freeze_encoder(model)
     return model
 
-
-
 output_dir = os.path.join('..\\frozen', model_name.replace('/', '-'))
 training_args = TrainingArguments(
     evaluation_strategy='epoch',
@@ -62,44 +60,44 @@ trainer = Trainer(
     model=None,
     args=training_args,
     model_init=model_init,
+    tokenizer=tokenizer,
     train_dataset=tokenized_datasets['train'],
     eval_dataset=tokenized_datasets['validation'],
     compute_metrics=compute_metrics,
-    tokenizer=tokenizer,
     data_collator=data_collator,
     callbacks= [early_stopping]
 )
 
-hp_space = {
-    'learning_rate': tune.choice([1e-3, 5e-4, 1e-4, 5e-5, 1e-5]),
-    'per_device_train_batch_size': tune.choice([8, 16, 32]),
-    'weight_decay': tune.choice([1e-2, 1e-3, 1e-4])
-}
+if args.hyperopt:
+    hp_space = {
+        'learning_rate': tune.choice([1e-3, 5e-4, 1e-4, 5e-5, 1e-5]),
+        'per_device_train_batch_size': tune.choice([8, 16, 32]),
+        'weight_decay': tune.choice([1e-2, 1e-3, 1e-4])
+    }
+    
+    scheduler = PopulationBasedTraining(
+        time_attr='training_iteration',
+        mode='max',
+        metric='objective',
+    )
 
-scheduler = PopulationBasedTraining(
-    time_attr='training_iteration',
-    mode='max',
-    metric='objective',
-)
-
-
-opt_metric = FROZEN_CFG.OPT_METRIC
-best_run = trainer.hyperparameter_search(
-    local_dir='..\\frozen',
-    hp_space=lambda _: hp_space,
-    direction='maximize',
-    backend='ray',
-    compute_objective=lambda m: m[opt_metric],
-    scheduler=scheduler,
-    keep_checkpoints_num=1,
-    verbose=0,
-    reuse_actors=True,
-    n_trials=10,
-)
-
-print('starting finetuning with frozen encoder . . .')
-for n, v in best_run.hyperparameters.items():
-    setattr(trainer.args, n, v)
+    opt_metric = FROZEN_CFG.OPT_METRIC
+    best_run = trainer.hyperparameter_search(
+        hp_space=lambda _: hp_space,
+        direction='maximize',
+        backend='ray',
+        compute_objective=lambda m: m[opt_metric],
+        scheduler=scheduler,
+        keep_checkpoints_num=1,
+        verbose=0,
+        reuse_actors=True,
+        n_trials=10,
+        resources_per_trial={'cpu':1, 'gpu': 1}
+    )
+    for n, v in best_run.hyperparameters.items():
+        setattr(trainer.args, n, v)
+else:
+    best_run = None
 
 trainer.train()
 predict_and_save_results(trainer, tokenized_datasets, output_dir, best_run)

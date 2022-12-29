@@ -35,9 +35,10 @@ def set_device():
     return 'cuda' if torch.cuda.is_available() else 'cpu'
 
 
-def predict_and_save_results(trainer, tokenized_datasets, output_dir, best_run):
-    with open(os.path.join(output_dir, 'hyperparameters.txt'), 'w') as hyperparams:
-        hyperparams.write(json.dumps(best_run.hyperparameters))
+def predict_and_save_results(trainer, tokenized_datasets, output_dir, best_run=None):
+    if best_run is not None:
+        with open(os.path.join(output_dir, 'hyperparameters.txt'), 'w') as hyperparams:
+            hyperparams.write(json.dumps(best_run.hyperparameters))
 
     train_res = trainer.predict(tokenized_datasets['train'], metric_key_prefix='train')
     validation_res = trainer.predict(tokenized_datasets['validation'], metric_key_prefix='validation')
@@ -61,10 +62,22 @@ def predict_and_save_results(trainer, tokenized_datasets, output_dir, best_run):
         metric_info.write(json.dumps(metrics_d))
 
 def freeze_encoder(model):
+    for p in model.base_model.embeddings.parameters():
+        p.requires_grad = False
+    
+    # some models name it this way
+    #for p in model.base_model.transformer.parameters():
+    #    p.requires_grad = False
+
     for p in model.base_model.encoder.parameters():
         p.requires_grad = False
+    
 
 def unfreeze_encoder(model):
+    for p in model.base_model.embeddings.parameters():
+        p.requires_grad = True
+    #for p in model.base_model.transformer.parameters():
+    #    p.requires_grad = True
     for p in model.base_model.encoder.parameters():
         p.requires_grad = True
 
