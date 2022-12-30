@@ -49,7 +49,7 @@
 | BERT large cased    | 0.789/0.749       | 0.824/0.821         | 0.729/0.691      | 8              | 5e-4              | 1e-2             | [8, 16, 32]         |
 | RoBERTa base        | 0.631/0.629       | 0.585/0.591         | 0.569/0.578      | 32             | 5e-4              | 1e-4             | [8, 16, 32]         |
 | DistilRoBERTa base  | 0.576/0.581       | 0.485/0.477         | 0.510/0.516      | 32             | 5e-4              | 1e-4             | [8, 16, 32]         |
-|                     |                   |                     |                  |                |                   |                  |                     |
+| RoBERTa large       | 0.512/0.506       | 0.492/0.486         | 0.493/0.502      | 32             | 5e-4              | 1e-4             | [8, 16, 32]         |
 
 ### End2End finetuning
 - finetuning for 5 epochs or using early stopping
