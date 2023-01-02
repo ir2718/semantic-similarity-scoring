@@ -67,7 +67,7 @@ weight_decay: [1e-2, 1e-3, 1e-4]
 
 | **Model**           | **Train set**     | **Validation  set** | **Test set**     | **Batch size** | **Learning rate** | **Weight decay** | **Batch size grid** |
 | ------------------- | ----------------- | ------------------- | ---------------- |--------------- | ----------------- | ---------------- | ------------------- |
-| BERT base cased     |                   |                     |                  |                |                   |                  |                     |
+| BERT base cased     | 0.995/0.995       | 0.899/0.896         | 0.865/0.856      | 32             |  5e-5             | 1e-4             | [8, 16, 32]         |
 | BERT large cased    |                   |                     |                  |                |                   |                  |                     |
 | RoBERTa base        |                   |                     |                  |                |                   |                  |                     |
 | RoBERTa large       |                   |                     |                  |                |                   |                  |                     |
