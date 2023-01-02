@@ -62,7 +62,7 @@ weight_decay: [1e-2, 1e-3, 1e-4]
 | DeBERTaV3 large     | 0.828/0.822       | 0.807/0.816         | 0.820/0.825      | 8              | 5e-4              | 1e-2             | [8, 16, 32]         |
 
 ### End2End finetuning
-- finetuning for 5 epochs or using early stopping
+- finetuning for 10 epochs or using early stopping
 
 
 | **Model**           | **Train set**     | **Validation  set** | **Test set**     | **Batch size** | **Learning rate** | **Weight decay** | **Batch size grid** |
