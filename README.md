@@ -29,19 +29,26 @@
 
 ### Hyperparameter optimization
 - done using [Population-based training](https://arxiv.org/pdf/1711.09846.pdf) or hand tuning
-- when using PBT the same values for the learning rate and weight decay are used: 
+- when using PBT with frozen encoder the same values for the learning rate and weight decay are used: 
 ```
   learning_rate: [1e-3, 5e-4, 1e-4, 5e-5, 1e-5]
   weight_decay: [1e-2, 1e-3, 1e-4]
 ```
-- the batch size grid used always contains exactly 3 values and varies depending on the size of the model
+
+- when using PBT with end to end tuning the values for the learning rate and weight decay used are:
+```
+learning_rate: [1e-4, 5e-5, 1e-5, 5e-6, 1e-6]
+weight_decay: [1e-2, 1e-3, 1e-4]
+```
+
+- the batch size grid used always contains exactly 3 values and varies depending on the size of the model - so far only 8, 16 and 32
 
 ### Masked language modeling
 - might be useful, but will be left out for now because of computation cost
 
 ### Finetuning with the frozen encoder
 - no gradient updates on encoder, transformer, embeddings etc.
-- finetuning for 10 epochs or using early stopping
+- finetuning for 10 epochs and using early stopping if no improvement is seen in the last 3 epochs
 
 | **Model**           | **Train set**     | **Validation  set** | **Test set**     | **Batch size** | **Learning rate** | **Weight decay** | **Batch size grid** |
 | ------------------- | ----------------- | ------------------- | ---------------- |--------------- | ----------------- | ---------------- | ------------------- |
@@ -56,6 +63,18 @@
 
 ### End2End finetuning
 - finetuning for 5 epochs or using early stopping
+
+
+| **Model**           | **Train set**     | **Validation  set** | **Test set**     | **Batch size** | **Learning rate** | **Weight decay** | **Batch size grid** |
+| ------------------- | ----------------- | ------------------- | ---------------- |--------------- | ----------------- | ---------------- | ------------------- |
+| BERT base cased     |                   |                     |                  |                |                   |                  |                     |
+| BERT large cased    |                   |                     |                  |                |                   |                  |                     |
+| RoBERTa base        |                   |                     |                  |                |                   |                  |                     |
+| RoBERTa large       |                   |                     |                  |                |                   |                  |                     |
+| DistilRoBERTa base  |                   |                     |                  |                |                   |                  |                     |
+| DeBERTaV3 small     |                   |                     |                  |                |                   |                  |                     |
+| DeBERTaV3 base      |                   |                     |                  |                |                   |                  |                     |
+| DeBERTaV3 large     |                   |                     |                  |                |                   |                  |                     |
 
 ### Ensembling the finetuned models
 - using a voting classifier or gradient boosting algorithms
