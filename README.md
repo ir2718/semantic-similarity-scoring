@@ -72,7 +72,7 @@ weight_decay: [1e-2, 1e-3, 1e-4]
 | RoBERTa base        |                   |                     |                  |                |                   |                  |                     |
 | RoBERTa large       |                   |                     |                  |                |                   |                  |                     |
 | DistilRoBERTa base  |                   |                     |                  |                |                   |                  |                     |
-| DeBERTaV3 small     |                   |                     |                  |                |                   |                  |                     |
+| DeBERTaV3 small     | 0.991/0.990       | 0.906/0.904         | 0.892/0.888      | 8              | 5e-5              | 1e-2             | [8, 16, 32]         |
 | DeBERTaV3 base      |                   |                     |                  |                |                   |                  |                     |
 | DeBERTaV3 large     |                   |                     |                  |                |                   |                  |                     |
 
