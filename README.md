@@ -46,8 +46,8 @@ weight_decay: [1e-2, 1e-3, 1e-4]
 ### Masked language modeling
 - might be useful, but will be left out for now because of computation cost
 
-### Finetuning with the frozen encoder
-- no gradient updates on encoder, transformer, embeddings etc.
+### Finetuning with the frozen base model
+- no gradient updates on all parameters of base model
 - finetuning for 10 epochs and using early stopping if no improvement is seen in the last 3 epochs
 
 | **Model**           | **Train set**     | **Validation  set** | **Test set**     | **Batch size** | **Learning rate** | **Weight decay** | **Batch size grid** |
@@ -71,7 +71,7 @@ weight_decay: [1e-2, 1e-3, 1e-4]
 | BERT large cased    |                   |                     |                  |                |                   |                  |                     |
 | RoBERTa base        |                   |                     |                  |                |                   |                  |                     |
 | RoBERTa large       |                   |                     |                  |                |                   |                  |                     |
-| DistilRoBERTa base  |                   |                     |                  |                |                   |                  |                     |
+| DistilRoBERTa base  | 0.988/0.986       | 0.887/0.885         | 0.858/0.849      | 32             | 5e-5              | 1e-4             | [8, 16, 32]         |
 | DeBERTaV3 small     | 0.991/0.990       | 0.906/0.904         | 0.892/0.888      | 8              | 5e-5              | 1e-2             | [8, 16, 32]         |
 | DeBERTaV3 base      |                   |                     |                  |                |                   |                  |                     |
 | DeBERTaV3 large     |                   |                     |                  |                |                   |                  |                     |
@@ -79,7 +79,16 @@ weight_decay: [1e-2, 1e-3, 1e-4]
 ### Ensembling the finetuned models
 - using a voting classifier or gradient boosting algorithms
 ---------------------------------------
-- cosine annealing/linear scheduling for the learning rates with warmup steps
+- cosine annealing for the learning rates with warmup steps
 - FP16 training throughout all the steps to reduce the model training time
-- regularization will be done using weight decay
+- regularization using weight decay
 - using pearsons' and spearmans' coefficient for evaluation
+
+### Usage
+- training is split into two main scripts ```frozen_training.py``` and ```end2end_training.py``` and they should be used in that order
+- all scripts are meant to be called from the ```src/scripts``` folder and all of them have default arguments
+```
+cd src/scripts
+python frozen_training.py --model_name bert-base-cased
+python end2end_training.py --model_name bert-base-cased
+```
