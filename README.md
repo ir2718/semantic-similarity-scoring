@@ -41,7 +41,8 @@ learning_rate: [1e-4, 5e-5, 1e-5, 5e-6, 1e-6]
 weight_decay: [1e-2, 1e-3, 1e-4]
 ```
 
-- the batch size grid used always contains exactly 3 values and varies depending on the size of the model - so far only 8, 16 and 32
+- the batch size grid used for finetuning with the frozen base model is:
+```[8, 16, 32]```
 
 ### Masked language modeling
 - might be useful, but will be left out for now because of computation cost
@@ -50,16 +51,16 @@ weight_decay: [1e-2, 1e-3, 1e-4]
 - no gradient updates on all parameters of base model
 - finetuning for 10 epochs and using early stopping if no improvement is seen in the last 3 epochs
 
-| **Model**           | **Train set**     | **Validation  set** | **Test set**     | **Batch size** | **Learning rate** | **Weight decay** | **Batch size grid** |
-| ------------------- | ----------------- | ------------------- | ---------------- |--------------- | ----------------- | ---------------- | ------------------- |
-| BERT base cased     | 0.793/0.749       | 0.814/0.809         | 0.735/0.697      | 32             | 5e-4              | 1e-4             | [8, 16, 32]         |
-| BERT large cased    | 0.789/0.749       | 0.824/0.821         | 0.729/0.691      | 8              | 5e-4              | 1e-2             | [8, 16, 32]         |
-| RoBERTa base        | 0.631/0.629       | 0.585/0.591         | 0.569/0.578      | 32             | 5e-4              | 1e-4             | [8, 16, 32]         |
-| RoBERTa large       | 0.512/0.506       | 0.492/0.486         | 0.493/0.502      | 32             | 5e-4              | 1e-4             | [8, 16, 32]         |
-| DistilRoBERTa base  | 0.576/0.581       | 0.485/0.477         | 0.510/0.516      | 32             | 5e-4              | 1e-4             | [8, 16, 32]         |
-| DeBERTaV3 small     | 0.782/0.764       | 0.761/0.763         | 0.758/0.758      | 32             | 5e-4              | 1e-4             | [8, 16, 32]         |
-| DeBERTaV3 base      | 0.838/0.832       | 0.809/0.823         | 0.824/0.831      | 32             | 5e-4              | 1e-4             | [8, 16, 32]         |
-| DeBERTaV3 large     | 0.828/0.822       | 0.807/0.816         | 0.820/0.825      | 8              | 5e-4              | 1e-2             | [8, 16, 32]         |
+| **Model**           | **Train set**     | **Validation  set** | **Test set**     | **Batch size** | **Learning rate** | **Weight decay** |
+| ------------------- | ----------------- | ------------------- | ---------------- |--------------- | ----------------- | ---------------- |
+| BERT base cased     | 0.793/0.749       | 0.814/0.809         | 0.735/0.697      | 32             | 5e-4              | 1e-4             |
+| BERT large cased    | 0.789/0.749       | 0.824/0.821         | 0.729/0.691      | 8              | 5e-4              | 1e-2             |
+| RoBERTa base        | 0.631/0.629       | 0.585/0.591         | 0.569/0.578      | 32             | 5e-4              | 1e-4             |
+| RoBERTa large       | 0.512/0.506       | 0.492/0.486         | 0.493/0.502      | 32             | 5e-4              | 1e-4             |
+| DistilRoBERTa base  | 0.576/0.581       | 0.485/0.477         | 0.510/0.516      | 32             | 5e-4              | 1e-4             |
+| DeBERTaV3 small     | 0.782/0.764       | 0.761/0.763         | 0.758/0.758      | 32             | 5e-4              | 1e-4             |
+| DeBERTaV3 base      | 0.838/0.832       | 0.809/0.823         | 0.824/0.831      | 32             | 5e-4              | 1e-4             |
+| DeBERTaV3 large     | 0.828/0.822       | 0.807/0.816         | 0.820/0.825      | 8              | 5e-4              | 1e-2             |
 
 ### End2End finetuning
 - finetuning for 10 epochs or using early stopping
