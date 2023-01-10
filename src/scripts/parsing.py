@@ -22,23 +22,19 @@ def _parse():
     
     parser.add_argument('--seed', type=int, default=42)
     parser.add_argument('--patience', type=int, default=3)
-    return parser
-
-def parse_fine_tune():
-    parser = _parse()
-    parser.add_argument('--pretrained_path', type=str)
     parser.add_argument('--warmup_ratio', type=float, default=0.1)
     parser.add_argument('--scheduler', type=str, default='cosine')
-    args = parser.parse_args()
-    return args
 
-def parse_mlm():
+    parser.add_argument('--grad_checkpoint', type=str2bool, default=False)
+    return parser
+
+def parse_fine_tune_frozen():
     parser = _parse()
-    parser.add_argument('--block_size', type=int, default=128)
     args = parser.parse_args()
     return args
 
-#def main():
-#    args = parse_mlm()
-#    print(args)
-#main()
+def parse_fine_tune_end2end():
+    parser = _parse()
+    parser.add_argument('--pretrained_path', type=str)
+    args = parser.parse_args()
+    return args

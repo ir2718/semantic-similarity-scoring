@@ -1,24 +1,7 @@
-class MLM_CFG:
-    @staticmethod
-    def set_args(args):
-        MLM_CFG.MODEL_NAME = args.model_name
-        
-        MLM_CFG.EPOCHS = args.num_epochs
-        MLM_CFG.TRAIN_BATCH_SIZE = args.train_batch_size
-        MLM_CFG.VAL_BATCH_SIZE = args.val_batch_size
-        MLM_CFG.WEIGHT_DECAY = args.weight_decay
-        MLM_CFG.LEARNING_RATE_START = args.learning_rate_start
-        
-        MLM_CFG.BLOCK_SIZE = args.block_size
-        
-        MLM_CFG.SEED = args.seed
-        FROZEN_CFG.PATIENCE = args.patience
-
 class FROZEN_CFG:
     @staticmethod
     def set_args(args):
         FROZEN_CFG.MODEL_NAME = args.model_name
-        FROZEN_CFG.PRETRAINED_PATH = args.pretrained_path
         
         FROZEN_CFG.EPOCHS = args.num_epochs
         FROZEN_CFG.TRAIN_BATCH_SIZE = args.train_batch_size
@@ -30,7 +13,6 @@ class FROZEN_CFG:
         FROZEN_CFG.OPTIM = args.optim
         FROZEN_CFG.OPT_METRIC = args.opt_metric
         
-
         FROZEN_CFG.SEED = args.seed
         FROZEN_CFG.PATIENCE = args.patience
 
@@ -53,3 +35,5 @@ class END2END_CFG:
         
         END2END_CFG.SEED = args.seed
         END2END_CFG.PATIENCE = args.patience
+
+        END2END_CFG.GRAD_CHECKPOINT = args.grad_checkpoint

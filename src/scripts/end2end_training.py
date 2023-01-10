@@ -1,23 +1,21 @@
-from transformers import AutoTokenizer, AutoModelForSequenceClassification, DataCollatorWithPadding, TrainingArguments, Trainer, EarlyStoppingCallback
+from transformers import AutoTokenizer, AutoModelForSequenceClassification, DataCollatorWithPadding, TrainingArguments, Trainer, EarlyStoppingCallback, AutoConfig
 from ray.tune.schedulers import PopulationBasedTraining
 from ray import tune
 from utils import *
-from parsing import parse_fine_tune_frozen
-from configs import FROZEN_CFG
+from parsing import parse_fine_tune_end2end
+from configs import END2END_CFG
 import os
 
-args = parse_fine_tune_frozen()
-
-FROZEN_CFG.set_args(args)
-set_seed_(FROZEN_CFG.SEED)
+args = parse_fine_tune_end2end()
+END2END_CFG.set_args(args)
 device = set_device()
 
 dataset = load_dataset_from_huggingface(DATASET_PATH, CONFIG_NAME, args.dataset_path)
 
-model_name = FROZEN_CFG.MODEL_NAME
+model_name = END2END_CFG.MODEL_NAME
 tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=False)
-tokenizer_kwargs = {
-    'tokenizer': tokenizer,
+tokenizer_kwargs={
+    'tokenizer': tokenizer
 }
 tokenized_datasets = dataset.map(
     tokenize_function, 
@@ -25,37 +23,41 @@ tokenized_datasets = dataset.map(
     fn_kwargs=tokenizer_kwargs,
 )
 
+best_model_path, config_path = get_best_model_and_config_path(model_name)
+print(f'\nBest model path found: {best_model_path}\n')
+
 data_collator = DataCollatorWithPadding(tokenizer=tokenizer)
 
 def model_init():
     model = AutoModelForSequenceClassification.from_pretrained(
-        model_name, 
-        num_labels=1,
+        best_model_path, 
+        local_files_only=True
     )
-    freeze_encoder(model)
+    unfreeze_encoder(model)
     return model
 
-output_dir = os.path.join('..\\frozen', model_name.replace('/', '-'))
+output_dir = os.path.join('..\\end2end', model_name.replace('/', '-'))
 training_args = TrainingArguments(
     evaluation_strategy='epoch',
     save_strategy='epoch',
     logging_strategy='epoch',
-    optim=FROZEN_CFG.OPTIM,
-    learning_rate=FROZEN_CFG.LEARNING_RATE_START,
-    per_device_train_batch_size=FROZEN_CFG.TRAIN_BATCH_SIZE,
-    per_device_eval_batch_size=FROZEN_CFG.VAL_BATCH_SIZE,
-    num_train_epochs=FROZEN_CFG.EPOCHS,
+    optim=END2END_CFG.OPTIM,
+    learning_rate=END2END_CFG.LEARNING_RATE_START,
+    per_device_train_batch_size=END2END_CFG.TRAIN_BATCH_SIZE,
+    per_device_eval_batch_size=END2END_CFG.VAL_BATCH_SIZE,
+    num_train_epochs=END2END_CFG.EPOCHS,
     output_dir=output_dir,
-    weight_decay=FROZEN_CFG.WEIGHT_DECAY,
-    lr_scheduler_type=FROZEN_CFG.SCHEDULER,
-    warmup_ratio=FROZEN_CFG.WARMUP_RATIO,
-    fp16=True,
+    weight_decay=END2END_CFG.WEIGHT_DECAY,
+    lr_scheduler_type=END2END_CFG.SCHEDULER,
+    warmup_ratio=END2END_CFG.WARMUP_RATIO,
+    fp16=False,
     load_best_model_at_end=True,
-    metric_for_best_model=FROZEN_CFG.OPT_METRIC,
+    metric_for_best_model=END2END_CFG.OPT_METRIC,
+    gradient_checkpointing=END2END_CFG.GRAD_CHECKPOINT,
 )
 
 
-early_stopping = EarlyStoppingCallback(early_stopping_patience=FROZEN_CFG.PATIENCE)
+early_stopping = EarlyStoppingCallback(early_stopping_patience=END2END_CFG.PATIENCE)
 trainer = Trainer(
     model=None,
     args=training_args,
@@ -65,12 +67,12 @@ trainer = Trainer(
     eval_dataset=tokenized_datasets['validation'],
     compute_metrics=compute_metrics,
     data_collator=data_collator,
-    callbacks= [early_stopping]
+    callbacks=[early_stopping],
 )
 
 if args.hyperopt:
     hp_space = {
-        'learning_rate': tune.choice([1e-3, 5e-4, 1e-4, 5e-5, 1e-5]),
+        'learning_rate': tune.choice([1e-4, 5e-5, 1e-5, 5e-6, 1e-6]),
         'per_device_train_batch_size': tune.choice([8, 16, 32]),
         'weight_decay': tune.choice([1e-2, 1e-3, 1e-4])
     }
@@ -81,7 +83,7 @@ if args.hyperopt:
         metric='objective',
     )
 
-    opt_metric = FROZEN_CFG.OPT_METRIC
+    opt_metric = END2END_CFG.OPT_METRIC
     best_run = trainer.hyperparameter_search(
         hp_space=lambda _: hp_space,
         direction='maximize',

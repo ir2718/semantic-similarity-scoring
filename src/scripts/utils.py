@@ -34,7 +34,6 @@ def _load_test_labels(dataset_path):
 def set_device():
     return 'cuda' if torch.cuda.is_available() else 'cpu'
 
-
 def predict_and_save_results(trainer, tokenized_datasets, output_dir, best_run=None):
     if best_run is not None:
         with open(os.path.join(output_dir, 'hyperparameters.txt'), 'w') as hyperparams:
@@ -62,24 +61,17 @@ def predict_and_save_results(trainer, tokenized_datasets, output_dir, best_run=N
         metric_info.write(json.dumps(metrics_d))
 
 def freeze_encoder(model):
-    for p in model.base_model.embeddings.parameters():
+    for p in model.base_model.parameters():
         p.requires_grad = False
-    
-    # some models name it this way
-    #for p in model.base_model.transformer.parameters():
-    #    p.requires_grad = False
-
-    for p in model.base_model.encoder.parameters():
-        p.requires_grad = False
-    
 
 def unfreeze_encoder(model):
-    for p in model.base_model.embeddings.parameters():
+    for p in model.base_model.parameters():
         p.requires_grad = True
-    #for p in model.base_model.transformer.parameters():
-    #    p.requires_grad = True
-    for p in model.base_model.encoder.parameters():
-        p.requires_grad = True
+
+def check_grad_params(model):
+    for p in model.named_parameters():
+        if p[1].requires_grad:
+            print(p[0])
 
 def compute_metrics(eval_preds):
     output = eval_preds.predictions
@@ -110,10 +102,6 @@ def load_stsb_dataset_from_disk(dataset_path):
     })
     return dataset_dict
 
-
-def _get_all_sentences_list(dataset, split):
-    return dataset[split]['sentence1'][:] + dataset[split]['sentence2'][:]
-
 def load_dataset_from_huggingface(dataset_path, config_name, label_dir):
     dataset = datasets.load_dataset(dataset_path, config_name)
 
@@ -121,21 +109,6 @@ def load_dataset_from_huggingface(dataset_path, config_name, label_dir):
     dataset['test'] = dataset['test'].remove_columns('label')
     dataset['test'] = dataset['test'].add_column(name='label', column=test_labels['label'])
     return dataset
-
-def preprocess_dataset_for_mlm(dataset):
-    all_sentences_train = _get_all_sentences_list(dataset, 'train')
-    all_sentences_validation = _get_all_sentences_list(dataset, 'validation')
-    all_sentences_test = _get_all_sentences_list(dataset, 'test')
-
-    dataset_mlm = datasets.DatasetDict({
-        'train': datasets.Dataset.from_dict({'sentence': all_sentences_train}),
-        'validation': datasets.Dataset.from_dict({'sentence': all_sentences_validation}),
-        'test': datasets.Dataset.from_dict({'sentence': all_sentences_test})
-    })
-    return dataset_mlm
-
-def preprocess_dataset_for_finetuning(datasets):
-    return datasets
 
 def tokenize_function(examples, **fn_kwargs):
     result = fn_kwargs['tokenizer'](
@@ -145,16 +118,11 @@ def tokenize_function(examples, **fn_kwargs):
     )
     return result
 
-def group_texts(examples, **fn_kwargs):
-    block_size = fn_kwargs['block_size']
-    concatenated_examples = {k: sum(examples[k], []) for k in examples.keys()}
-    total_length = len(concatenated_examples[list(examples.keys())[0]])
-    # We drop the small remainder, we could add padding if the model supported it instead of this drop
-    total_length = (total_length // block_size) * block_size
-    # Split by chunks of max_len.
-    result = {
-        k: [t[i : i + block_size] for i in range(0, total_length, block_size)]
-        for k, t in concatenated_examples.items()
-    }
-    result["labels"] = result["input_ids"].copy()
-    return results
+def get_best_model_and_config_path(model_name):
+    model_dir = os.path.join('..\\frozen', model_name.replace('/', '-'))
+    all_dirs = [f for f in os.listdir(model_dir) if os.path.isdir(os.path.join(model_dir, f)) and f.startswith('checkpoint-')]
+    checkpoint_dir = {os.path.join(model_dir, d):int(d.split('-')[-1])  for d in all_dirs}
+    final_dir = sorted(checkpoint_dir, key=checkpoint_dir.get, reverse=True)[0]
+    trainer_state = json.load(open(os.path.join(final_dir, 'trainer_state.json')))
+    best_model_checkpoint = os.path.abspath(trainer_state['best_model_checkpoint'])
+    return best_model_checkpoint, os.path.join(best_model_checkpoint, 'config.json')
