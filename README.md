@@ -66,16 +66,21 @@ weight_decay: [1e-2, 1e-3, 1e-4]
 - finetuning for 10 epochs or using early stopping
 
 
-| **Model**           | **Train set**     | **Validation  set** | **Test set**     | **Batch size** | **Learning rate** | **Weight decay** | **Batch size grid** |
-| ------------------- | ----------------- | ------------------- | ---------------- |--------------- | ----------------- | ---------------- | ------------------- |
-| BERT base cased     | 0.995/0.995       | 0.899/0.896         | 0.865/0.856      | 32             | 5e-5              | 1e-4             | [8, 16, 32]         |
-| BERT large cased    |                   |                     |                  |                |                   |                  |                     |
-| RoBERTa base        | 0.989/0.988       | 0.913/0.911         | 0.895/0.890      | 32             | 5e-5              | 1e-4             | [8, 16, 32]         |
-| RoBERTa large       |                   |                     |                  |                |                   |                  |                     |
-| DistilRoBERTa base  | 0.988/0.986       | 0.887/0.885         | 0.858/0.849      | 32             | 5e-5              | 1e-4             | [8, 16, 32]         |
-| DeBERTaV3 small     | 0.991/0.990       | 0.906/0.904         | 0.892/0.888      | 8              | 5e-5              | 1e-2             | [8, 16, 32]         |
-| DeBERTaV3 base      |                   |                     |                  |                |                   |                  |                     |
-| DeBERTaV3 large     |                   |                     |                  |                |                   |                  |                     |
+| **Model**           | **Train set**     | **Validation  set** | **Test set**     | **Batch size** | **Learning rate** | **Weight decay** |
+| ------------------- | ----------------- | ------------------- | ---------------- |--------------- | ----------------- | ---------------- |
+| BERT base cased     | 0.995/0.995       | 0.899/0.896         | 0.865/0.856      | 32             | 5e-5              | 1e-4             |
+| BERT large cased    |                   |                     |                  |                |                   |                  |
+| RoBERTa base        | 0.989/0.988       | 0.913/0.911         | 0.895/0.890      | 32             | 5e-5              | 1e-4             |
+| RoBERTa large       | 0.994/0.994       | 0.921/0.920         | 0.904/0.899      | 32             | 5e-5              | 1e-4             |
+| DistilRoBERTa base  | 0.988/0.986       | 0.887/0.885         | 0.858/0.849      | 32             | 5e-5              | 1e-4             |
+| DeBERTaV3 small     | 0.991/0.990       | 0.906/0.904         | 0.892/0.888      | 8              | 5e-5              | 1e-2             |
+| DeBERTaV3 base      |                   |                     |                  |                |                   |                  |
+| DeBERTaV3 large     |                   |                     |                  |                |                   |                  |
+
+- due to computation costs, batch size and learning rate hyperparameters stay the same, while all values of weight decay are tested for larger architectures:
+  - RoBERTa large
+  - BERT large cased
+  - DeBERTaV3 base, large
 
 ### Ensembling the finetuned models
 - using a voting classifier or gradient boosting algorithms
