@@ -48,7 +48,7 @@ weight_decay: [1e-2, 1e-3, 1e-4]
 - might be useful, but will be left out for now because of computation cost
 
 ### Finetuning with the frozen base model
-- no gradient updates on all parameters of base model
+- no gradient updates on all parameters of base model, except for pooler
 - finetuning for 10 epochs and using early stopping if no improvement is seen in the last 3 epochs
 
 | **Model**           | **Train set**     | **Validation  set** | **Test set**     | **Batch size** | **Learning rate** | **Weight decay** |
