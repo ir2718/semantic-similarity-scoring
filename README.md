@@ -74,7 +74,7 @@ weight_decay: [1e-2, 1e-3, 1e-4]
 | RoBERTa large       | 0.994/0.994       | 0.921/0.920         | 0.904/0.899      | 32             | 5e-5              | 1e-4             |
 | DistilRoBERTa base  | 0.988/0.986       | 0.887/0.885         | 0.858/0.849      | 32             | 5e-5              | 1e-4             |
 | DeBERTaV3 small     | 0.991/0.990       | 0.906/0.904         | 0.892/0.888      | 8              | 5e-5              | 1e-2             |
-| DeBERTaV3 base      |                   |                     |                  |                |                   |                  |
+| DeBERTaV3 base      | 0.996/0.996       | 0.917/0.915         | 0.907/0.904      | 8              | 5e-5              | 1e-3             |
 | DeBERTaV3 large     |                   |                     |                  |                |                   |                  |
 
 - due to computation costs, batch size and learning rate hyperparameters stay the same, while all values of weight decay are tested for larger architectures:
