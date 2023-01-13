@@ -29,23 +29,19 @@
 
 ### Hyperparameter optimization
 - done using [Population-based training](https://arxiv.org/pdf/1711.09846.pdf) or hand tuning
-- when using PBT with frozen encoder the same values for the learning rate and weight decay are used: 
+- when using PBT with the frozen encoder the values used for the hyperparameters used are: 
 ```
   learning_rate: [1e-3, 5e-4, 1e-4, 5e-5, 1e-5]
   weight_decay: [1e-2, 1e-3, 1e-4]
+  batch_size: [8, 16, 32]
 ```
 
-- when using PBT with end to end tuning the values for the learning rate and weight decay used are:
+- when using PBT with end to end tuning:
 ```
-learning_rate: [1e-4, 5e-5, 1e-5, 5e-6, 1e-6]
-weight_decay: [1e-2, 1e-3, 1e-4]
+  learning_rate: [1e-4, 5e-5, 1e-5, 5e-6, 1e-6]
+  weight_decay: [1e-2, 1e-3, 1e-4]
+  batch_size: [8, 16, 32]
 ```
-
-- the batch size grid used for finetuning with the frozen base model is:
-```[8, 16, 32]```
-
-### Masked language modeling
-- might be useful, but will be left out for now because of computation cost
 
 ### Finetuning with the frozen base model
 - no gradient updates on all parameters of base model, except for pooler
@@ -62,8 +58,8 @@ weight_decay: [1e-2, 1e-3, 1e-4]
 | DeBERTaV3 base      | 0.838/0.832       | 0.809/0.823         | 0.824/0.831      | 32             | 5e-4              | 1e-4             |
 | DeBERTaV3 large     | 0.828/0.822       | 0.807/0.816         | 0.820/0.825      | 8              | 5e-4              | 1e-2             |
 
-### End2End finetuning
-- finetuning for 10 epochs or using early stopping
+### End-to-end finetuning
+- finetuning for 10 epochs and using early stopping if no improvement is seen in the last 3 epochs
 
 
 | **Model**           | **Train set**     | **Validation  set** | **Test set**     | **Batch size** | **Learning rate** | **Weight decay** |
@@ -75,9 +71,9 @@ weight_decay: [1e-2, 1e-3, 1e-4]
 | DistilRoBERTa base  | 0.988/0.986       | 0.887/0.885         | 0.858/0.849      | 32             | 5e-5              | 1e-4             |
 | DeBERTaV3 small     | 0.991/0.990       | 0.906/0.904         | 0.892/0.888      | 8              | 5e-5              | 1e-2             |
 | DeBERTaV3 base      | 0.996/0.996       | 0.917/0.915         | 0.907/0.904      | 8              | 5e-5              | 1e-3             |
-| DeBERTaV3 large     |                   |                     |                  |                |                   |                  |
+| DeBERTaV3 large     | 0.991/0.990       | 0.927/0.926         | 0.922/0.921      | 8              | 1e-5              | 1e-4             |
 
-- due to computation costs, batch size and learning rate hyperparameters stay the same, while all values of weight decay are tested for larger architectures:
+- due to computation costs, hand tuning is used for end-to-end tuning of larger architectures such as:
   - RoBERTa large
   - BERT large cased
   - DeBERTaV3 base, large
