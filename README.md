@@ -47,6 +47,16 @@
 - no gradient updates on all parameters of base model, except for pooler
 - finetuning for 10 epochs and using early stopping if no improvement is seen in the last 3 epochs
 
+### End-to-end finetuning
+- finetuning for 10 epochs and using early stopping if no improvement is seen in the last 3 epochs
+- due to computation costs, hand tuning is used for end-to-end tuning of larger architectures such as:
+  - RoBERTa large
+  - BERT large cased
+  - DeBERTaV3 base, large
+
+#### Mean squared error loss function
+- finetuning the models using MSE as the loss function
+
 | **Model**           | **Train set**     | **Validation  set** | **Test set**     | **Batch size** | **Learning rate** | **Weight decay** |
 | ------------------- | ----------------- | ------------------- | ---------------- |--------------- | ----------------- | ---------------- |
 | BERT base cased     | 0.793/0.749       | 0.814/0.809         | 0.735/0.697      | 32             | 5e-4              | 1e-4             |
@@ -54,13 +64,10 @@
 | RoBERTa base        | 0.631/0.629       | 0.585/0.591         | 0.569/0.578      | 32             | 5e-4              | 1e-4             |
 | RoBERTa large       | 0.512/0.506       | 0.492/0.486         | 0.493/0.502      | 32             | 5e-4              | 1e-4             |
 | DistilRoBERTa base  | 0.576/0.581       | 0.485/0.477         | 0.510/0.516      | 32             | 5e-4              | 1e-4             |
+| DistilBERT base cased |                 |                     |                  |                |                   |                  |
 | DeBERTaV3 small     | 0.782/0.764       | 0.761/0.763         | 0.758/0.758      | 32             | 5e-4              | 1e-4             |
 | DeBERTaV3 base      | 0.838/0.832       | 0.809/0.823         | 0.824/0.831      | 32             | 5e-4              | 1e-4             |
 | DeBERTaV3 large     | 0.828/0.822       | 0.807/0.816         | 0.820/0.825      | 8              | 5e-4              | 1e-2             |
-
-### End-to-end finetuning
-- finetuning for 10 epochs and using early stopping if no improvement is seen in the last 3 epochs
-
 
 | **Model**           | **Train set**     | **Validation  set** | **Test set**     | **Batch size** | **Learning rate** | **Weight decay** |
 | ------------------- | ----------------- | ------------------- | ---------------- |--------------- | ----------------- | ---------------- |
@@ -73,10 +80,46 @@
 | DeBERTaV3 base      | 0.996/0.996       | 0.917/0.915         | 0.907/0.904      | 8              | 5e-5              | 1e-3             |
 | DeBERTaV3 large     | 0.991/0.990       | 0.927/0.926         | 0.922/0.921      | 8              | 1e-5              | 1e-4             |
 
-- due to computation costs, hand tuning is used for end-to-end tuning of larger architectures such as:
-  - RoBERTa large
-  - BERT large cased
-  - DeBERTaV3 base, large
+
+#### Cross entropy loss function
+- finetuning the models using cross entropy as the loss function
+- labels are scaled to $[0, 1]$ for this approach
+
+| **Model**           | **Train set**     | **Validation  set** | **Test set**     | **Batch size** | **Learning rate** | **Weight decay** |
+| ------------------- | ----------------- | ------------------- | ---------------- |--------------- | ----------------- | ---------------- |
+| BERT base cased     |                   |                     |                  |                |                   |                  |
+| BERT large cased    |                   |                     |                  |                |                   |                  |
+| RoBERTa base        |                   |                     |                  |                |                   |                  |
+| RoBERTa large       |                   |                     |                  |                |                   |                  |
+| DistilRoBERTa base  |                   |                     |                  |                |                   |                  |
+| DistilBERT base cased |                 |                     |                  |                |                   |                  |
+| DeBERTaV3 small     |                   |                     |                  |                |                   |                  |
+| DeBERTaV3 base      |                   |                     |                  |                |                   |                  |
+| DeBERTaV3 large     |                   |                     |                  |                |                   |                  |
+
+| **Model**           | **Train set**     | **Validation  set** | **Test set**     | **Batch size** | **Learning rate** | **Weight decay** |
+| ------------------- | ----------------- | ------------------- | ---------------- |--------------- | ----------------- | ---------------- |
+| BERT base cased     |                   |                     |                  |                |                   |                  |
+| BERT large cased    |                   |                     |                  |                |                   |                  |
+| RoBERTa base        |                   |                     |                  |                |                   |                  |
+| RoBERTa large       |                   |                     |                  |                |                   |                  |
+| DistilRoBERTa base  |                   |                     |                  |                |                   |                  |
+| DistilBERT base cased |                 |                     |                  |                |                   |                  |
+| DeBERTaV3 small     |                   |                     |                  |                |                   |                  |
+| DeBERTaV3 base      |                   |                     |                  |                |                   |                  |
+| DeBERTaV3 large     |                   |                     |                  |                |                   |                  |
+
+#### Cosine similarity loss function
+- finetuning the models using sentence transformers and cosine similarity as the loss function
+
+| **Model**           | **Train set**     | **Validation  set** | **Test set**     | **Batch size** | **Learning rate** | **Weight decay** |
+| ------------------- | ----------------- | ------------------- | ---------------- |--------------- | ----------------- | ---------------- |
+|                     |                   |                     |                  |                |                   |                  |
+
+| **Model**           | **Train set**     | **Validation  set** | **Test set**     | **Batch size** | **Learning rate** | **Weight decay** |
+| ------------------- | ----------------- | ------------------- | ---------------- |--------------- | ----------------- | ---------------- |
+|                     |                   |                     |                  |                |                   |                  |
+
 
 ### Ensembling the finetuned models
 - using a voting classifier or gradient boosting algorithms
