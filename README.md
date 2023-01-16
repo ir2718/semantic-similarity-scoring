@@ -54,7 +54,7 @@
   - BERT large cased
   - DeBERTaV3 base, large
 
-#### Mean squared error loss function
+### Mean squared error loss function
 - finetuning the models using MSE as the loss function
 
 | **Model**           | **Train set**     | **Validation  set** | **Test set**     | **Batch size** | **Learning rate** | **Weight decay** |
@@ -82,21 +82,21 @@
 | DeBERTaV3 large     | 0.991/0.990       | 0.927/0.926         | 0.922/0.921      | 8              | 1e-5              | 1e-4             |
 
 
-#### Cross entropy loss function
+### Cross entropy loss function
 - finetuning the models using cross entropy as the loss function
 - labels are scaled to $[0, 1]$ for this approach
 
 | **Model**           | **Train set**     | **Validation  set** | **Test set**     | **Batch size** | **Learning rate** | **Weight decay** |
 | ------------------- | ----------------- | ------------------- | ---------------- |--------------- | ----------------- | ---------------- |
-| BERT base cased     |                   |                     |                  |                |                   |                  |
-| BERT large cased    |                   |                     |                  |                |                   |                  |
-| RoBERTa base        |                   |                     |                  |                |                   |                  |
-| RoBERTa large       |                   |                     |                  |                |                   |                  |
-| DistilRoBERTa base  |                   |                     |                  |                |                   |                  |
-| DistilBERT base cased |                 |                     |                  |                |                   |                  |
-| DeBERTaV3 small     |                   |                     |                  |                |                   |                  |
-| DeBERTaV3 base      |                   |                     |                  |                |                   |                  |
-| DeBERTaV3 large     |                   |                     |                  |                |                   |                  |
+| BERT base cased     | 0.779/0.723       | 0.813/0.802         | 0.726/0.686      | 8              | 5e-4              | 1e-2             |
+| BERT large cased    | 0.791/0.751       | 0.822/0.821         | 0.736/0.699      | 32             | 5e-4              | 1e-2             |
+| RoBERTa base        | 0.621/0.612       | 0.575/0.577         | 0.567/0.572      | 32             | 5e-4              | 1e-4             |
+| RoBERTa large       | 0.513/0.520       | 0.484/0.478         | 0.494/0.513      | 32             | 5e-4              | 1e-4             |
+| DistilRoBERTa base  | 0.590/0.586       | 0.488/0.475         | 0.515/0.510      | 32             | 5e-4              | 1e-4             |
+| DistilBERT base cased |0.656/0.614      | 0.609/0.614         | 0.589/0.561      | 8              | 5e-4              | 1e-2             |
+| DeBERTaV3 small     | 0.793/0.767       | 0.769/0.767         | 0.770/0.762      | 32             | 5e-4              | 1e-4             |
+| DeBERTaV3 base      | 0.843/0.830       | 0.813/0.819         | 0.828/0.827      | 32             | 5e-4              | 1e-4             |
+| DeBERTaV3 large     | 0.835/0.821       | 0.814/0.817         | 0.826/0.824      | 32             | 5e-4              | 1e-4             |
 
 | **Model**           | **Train set**     | **Validation  set** | **Test set**     | **Batch size** | **Learning rate** | **Weight decay** |
 | ------------------- | ----------------- | ------------------- | ---------------- |--------------- | ----------------- | ---------------- |
@@ -110,7 +110,7 @@
 | DeBERTaV3 base      |                   |                     |                  |                |                   |                  |
 | DeBERTaV3 large     |                   |                     |                  |                |                   |                  |
 
-#### Cosine similarity loss function
+### Cosine similarity loss function
 - finetuning the models using sentence transformers and cosine similarity as the loss function
 
 | **Model**           | **Train set**     | **Validation  set** | **Test set**     | **Batch size** | **Learning rate** | **Weight decay** |
