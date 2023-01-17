@@ -49,10 +49,6 @@
 
 ### End-to-end finetuning
 - finetuning for 10 epochs and using early stopping if no improvement is seen in the last 3 epochs
-- due to computation costs, hand tuning is used for end-to-end tuning of larger architectures such as:
-  - RoBERTa large
-  - BERT large cased
-  - DeBERTaV3 base, large
 
 ### Mean squared error loss function
 - finetuning the models using MSE as the loss function
@@ -81,6 +77,10 @@
 | DeBERTaV3 base      | 0.996/0.996       | 0.917/0.915         | 0.907/0.904      | 8              | 5e-5              | 1e-3             |
 | DeBERTaV3 large     | 0.991/0.990       | 0.927/0.926         | 0.922/0.921      | 8              | 1e-5              | 1e-4             |
 
+- due to computation costs, hand tuning was used for end-to-end tuning of larger architectures such as:
+  - RoBERTa large
+  - BERT large cased
+  - DeBERTaV3 base, large
 
 ### Cross entropy loss function
 - finetuning the models using cross entropy as the loss function
@@ -104,9 +104,9 @@
 | BERT large cased    |                   |                     |                  |                |                   |                  |
 | RoBERTa base        |                   |                     |                  |                |                   |                  |
 | RoBERTa large       |                   |                     |                  |                |                   |                  |
-| DistilRoBERTa base  |                   |                     |                  |                |                   |                  |
-| DistilBERT base cased |                 |                     |                  |                |                   |                  |
-| DeBERTaV3 small     |                   |                     |                  |                |                   |                  |
+| DistilRoBERTa base  | 0.990/0.989       | 0.890/0.888         | 0.859/0.850      | 8              | 5e-5              | 1e-2             |
+| DistilBERT base cased | 0.991/0.990     | 0.860/0.856         | 0.814/0.801      | 8              | 5e-5              | 1e-2             |
+| DeBERTaV3 small     | 0.990/0.988       | 0.907/0.904         | 0.893/0.890      | 28             | 5e-5              | 1e-4             |
 | DeBERTaV3 base      |                   |                     |                  |                |                   |                  |
 | DeBERTaV3 large     |                   |                     |                  |                |                   |                  |
 
