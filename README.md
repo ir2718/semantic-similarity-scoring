@@ -100,7 +100,7 @@
 
 | **Model**           | **Train set**     | **Validation  set** | **Test set**     | **Batch size** | **Learning rate** | **Weight decay** |
 | ------------------- | ----------------- | ------------------- | ---------------- |--------------- | ----------------- | ---------------- |
-| BERT base cased     |                   |                     |                  |                |                   |                  |
+| BERT base cased     | 0.997/0.996       | 0.899/0.896         | 0.861/0.849      | 8              | 5e-5              | 1e-2             |
 | BERT large cased    |                   |                     |                  |                |                   |                  |
 | RoBERTa base        |                   |                     |                  |                |                   |                  |
 | RoBERTa large       |                   |                     |                  |                |                   |                  |
@@ -109,6 +109,11 @@
 | DeBERTaV3 small     | 0.990/0.988       | 0.907/0.904         | 0.893/0.890      | 28             | 5e-5              | 1e-4             |
 | DeBERTaV3 base      |                   |                     |                  |                |                   |                  |
 | DeBERTaV3 large     |                   |                     |                  |                |                   |                  |
+
+- due to computation costs, hand tuning was used for end-to-end tuning of larger architectures such as:
+  - RoBERTa large
+  - BERT large cased
+  - DeBERTaV3 base, large
 
 ### Cosine similarity loss function
 - finetuning the models using sentence transformers and cosine similarity as the loss function
