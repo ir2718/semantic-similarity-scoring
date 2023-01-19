@@ -108,7 +108,7 @@
 | DistilBERT base cased | 0.991/0.990     | 0.860/0.856         | 0.814/0.801      | 8              | 5e-5              | 1e-2             |
 | DeBERTaV3 small     | 0.990/0.988       | 0.907/0.904         | 0.893/0.890      | 28             | 5e-5              | 1e-4             |
 | DeBERTaV3 base      | 0.988/0.987       | 0.919/0.917         | 0.912/0.911      | 32             | 5e-5              | 1e-4             |
-| DeBERTaV3 large     |                   |                     |                  |                |                   |                  |
+| DeBERTaV3 large     | 0.986/0.984       | 0.927/0.926         | 0.919/0.919      | 8              | 1e-5              | 1e-3             |
 
 - due to computation costs, hand tuning was used for end-to-end tuning of larger architectures such as:
   - RoBERTa large
@@ -120,15 +120,21 @@
 
 | **Model**           | **Train set**     | **Validation  set** | **Test set**     | **Batch size** | **Learning rate** | **Weight decay** |
 | ------------------- | ----------------- | ------------------- | ---------------- |--------------- | ----------------- | ---------------- |
-|                     |                   |                     |                  |                |                   |                  |
+| T5 base             |                   |                     |                  |                |                   |                  |
+| T5 large            |                   |                     |                  |                |                   |                  |
+| MiniLM L6 v2        |                   |                     |                  |                |                   |                  |
+| MiniLM L12 v2       |                   |                     |                  |                |                   |                  |
+| MPNet base v2       |                   |                     |                  |                |                   |                  |
+
 
 | **Model**           | **Train set**     | **Validation  set** | **Test set**     | **Batch size** | **Learning rate** | **Weight decay** |
 | ------------------- | ----------------- | ------------------- | ---------------- |--------------- | ----------------- | ---------------- |
-|                     |                   |                     |                  |                |                   |                  |
+| T5 base             |                   |                     |                  |                |                   |                  |
+| T5 large            |                   |                     |                  |                |                   |                  |
+| MiniLM L6 v2        |                   |                     |                  |                |                   |                  |
+| MiniLM L12 v2       |                   |                     |                  |                |                   |                  |
+| MPNet base v2       |                   |                     |                  |                |                   |                  |
 
-
-### Ensembling the finetuned models
-- using a voting classifier or gradient boosting algorithms
 ---------------------------------------
 - cosine annealing for the learning rates with warmup steps
 - FP16 training throughout all the steps to reduce the model training time
