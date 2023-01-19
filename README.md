@@ -101,13 +101,13 @@
 | **Model**           | **Train set**     | **Validation  set** | **Test set**     | **Batch size** | **Learning rate** | **Weight decay** |
 | ------------------- | ----------------- | ------------------- | ---------------- |--------------- | ----------------- | ---------------- |
 | BERT base cased     | 0.997/0.996       | 0.899/0.896         | 0.861/0.849      | 8              | 5e-5              | 1e-2             |
-| BERT large cased    |                   |                     |                  |                |                   |                  |
+| BERT large cased    | 0.978/0.976       | 0.909/0.906         | 0.875/0.865      | 8              | 1e-5              | 1e-4             |
 | RoBERTa base        | 0.992/0.991       | 0.908/0.906         | 0.886/0.881      | 8              | 5e-5              | 1e-2             |
 | RoBERTa large       |                   |                     |                  |                |                   |                  |
 | DistilRoBERTa base  | 0.990/0.989       | 0.890/0.888         | 0.859/0.850      | 8              | 5e-5              | 1e-2             |
 | DistilBERT base cased | 0.991/0.990     | 0.860/0.856         | 0.814/0.801      | 8              | 5e-5              | 1e-2             |
 | DeBERTaV3 small     | 0.990/0.988       | 0.907/0.904         | 0.893/0.890      | 28             | 5e-5              | 1e-4             |
-| DeBERTaV3 base      |                   |                     |                  |                |                   |                  |
+| DeBERTaV3 base      | 0.988/0.987       | 0.919/0.917         | 0.912/0.911      | 32             | 5e-5              | 1e-4             |
 | DeBERTaV3 large     |                   |                     |                  |                |                   |                  |
 
 - due to computation costs, hand tuning was used for end-to-end tuning of larger architectures such as:
