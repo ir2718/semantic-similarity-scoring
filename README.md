@@ -105,7 +105,7 @@
 
 ### Cosine similarity loss function
 - finetuning the models using sentence transformers and cosine similarity as the loss function
-- labels are scaled to $[-1, 1]$ for this approach
+- labels are scaled to $[0, 1]$ for this approach inspired by [this](https://github.com/UKPLab/sentence-transformers/blob/master/examples/training/sts/training_stsbenchmark_continue_training.py)
 - includes only end to end tuning
 
 | **Model**           | **Train set**     | **Validation  set** | **Test set**     | **Batch size** | **Learning rate** | **Weight decay** |
