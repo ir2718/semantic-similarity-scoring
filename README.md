@@ -2,18 +2,6 @@
 
 # WORK IN PROGRESS #
 
-## SOTA models for this task on STSB:
-- [Turing ULR v6](https://arxiv.org/abs/2210.14867)
-- Vega v1
-- [Turing NLR v5](https://arxiv.org/abs/2204.06644)
-- DeBERTa + CLEVER
-- [ERNIE](https://github.com/PaddlePaddle/ERNIE)
-- [StructBERT + CLEVER](https://github.com/alibaba/AliceMind)
-- [DeBERTa / TuringNLRv4](https://github.com/microsoft/DeBERTa)
-- MaxALBERT + DKM
-- ALVERT + DAAF + NAS
-- [T5](https://github.com/google-research/text-to-text-transfer-transformer)
-
 ## Project notes:
 
 ### Baselines
