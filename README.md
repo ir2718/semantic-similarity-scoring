@@ -31,6 +31,13 @@
   batch_size: [8, 16, 32]
 ```
 
+- when using grid search with end to end tuning for cosine similarity models:
+```
+  learning_rate: [1e-4, 3e-4, 5e-4]
+  weight_decay: [1e-4, 1e-2]
+  batch_size: [8, 32]
+```
+
 ### Finetuning with the frozen base model
 - no gradient updates on all parameters of base model, except for pooler
 - finetuning for 10 epochs and using early stopping if no improvement is seen in the last 3 epochs
@@ -110,11 +117,11 @@
 
 | **Model**           | **Train set**     | **Validation  set** | **Test set**     | **Batch size** | **Learning rate** | **Weight decay** |
 | ------------------- | ----------------- | ------------------- | ---------------- |--------------- | ----------------- | ---------------- |
-| T5 base             |                   |                     |                  |                |                   |                  |
+| T5 base             | 0.986/0.989       | 0.871/0.872         | 0.832/0.837      | 8              | 3e-4              | 1e-4             |
 | T5 large            |                   |                     |                  |                |                   |                  |
-| MiniLM L6 v2        |                   |                     |                  |                |                   |                  |
-| MiniLM L12 v2       |                   |                     |                  |                |                   |                  |
-| MPNet base v2       |                   |                     |                  |                |                   |                  |
+| MiniLM L6 v2        | 0.993/0.994       | 0.894/0.894         | 0.851/0.854      | 32             | 1e-4              | 1e-4             |
+| MiniLM L12 v2       | 0.994/0.995       | 0.898/0.899         | 0.857/0.859      | 32             | 1e-4              | 1e-4             |
+| MPNet base v2       | 0.995/0.996       | 0.907/0.906         | 0.875/0.876      | 32             | 1e-4              | 1e-4             |
 
 ---------------------------------------
 - cosine annealing for the learning rates with warmup steps
@@ -124,7 +131,7 @@
 
 ### Usage
 - training for mse and cross entropy loss functions is split into two main scripts, ```frozen_training.py``` and ```end2end_training.py``` and they should be used in that order
-- training for cosine similarity loss is in end2end_training_sentence.py
+- training for cosine similarity loss is in ```end2end_training_sentence.py```
 - all scripts are meant to be called from the ```src/scripts``` folder and all of them have default arguments
 ```
 cd src/scripts
