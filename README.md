@@ -118,15 +118,7 @@
 ### Cosine similarity loss function
 - finetuning the models using sentence transformers and cosine similarity as the loss function
 - labels are scaled to $[-1, 1]$ for this approach
-
-| **Model**           | **Train set**     | **Validation  set** | **Test set**     | **Batch size** | **Learning rate** | **Weight decay** |
-| ------------------- | ----------------- | ------------------- | ---------------- |--------------- | ----------------- | ---------------- |
-| T5 base             |                   |                     |                  |                |                   |                  |
-| T5 large            |                   |                     |                  |                |                   |                  |
-| MiniLM L6 v2        |                   |                     |                  |                |                   |                  |
-| MiniLM L12 v2       |                   |                     |                  |                |                   |                  |
-| MPNet base v2       |                   |                     |                  |                |                   |                  |
-
+- includes only end to end tuning
 
 | **Model**           | **Train set**     | **Validation  set** | **Test set**     | **Batch size** | **Learning rate** | **Weight decay** |
 | ------------------- | ----------------- | ------------------- | ---------------- |--------------- | ----------------- | ---------------- |
