@@ -135,10 +135,13 @@
 - using pearsons' and spearmans' coefficient for evaluation
 
 ### Usage
-- training is split into two main scripts ```frozen_training.py``` and ```end2end_training.py``` and they should be used in that order
+- training for mse and cross entropy loss functions is split into two main scripts, ```frozen_training.py``` and ```end2end_training.py``` and they should be used in that order
+- training for cosine similarity loss is in end2end_training_sentence.py
 - all scripts are meant to be called from the ```src/scripts``` folder and all of them have default arguments
 ```
 cd src/scripts
 python frozen_training.py --model_name bert-base-cased
 python end2end_training.py --model_name bert-base-cased
+
+python end2end_training_sentence.py --model_name t5-base
 ```
