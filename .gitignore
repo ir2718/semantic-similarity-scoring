@@ -1,6 +1,2 @@
-src/frozen/*/*/
-src/__pycache__
-src/.ipynb_checkpoints
-src/notebooks/.ipynb_checkpoints
-src/scripts/__pycache__
-src/scripts/.ipynb_checkpoints
+src/models/cross_entropy/*/*/*/
+src/models/mse/*/*/*/

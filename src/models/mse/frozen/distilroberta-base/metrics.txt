@@ -1,0 +1,1 @@
+{"train_loss": 1.5293892621994019, "train_pearson_r": 0.5761982632135199, "train_spearman_r": 0.5806296228513126, "validation_loss": 1.90437650680542, "validation_pearson_r": 0.484677707700403, "validation_spearman_r": 0.47679266360406236, "test_loss": 1.7887916564941406, "test_pearson_r": 0.5104364811836896, "test_spearman_r": 0.5162143215183574}
