@@ -117,6 +117,7 @@
 
 ### Cosine similarity loss function
 - finetuning the models using sentence transformers and cosine similarity as the loss function
+- labels are scaled to $[-1, 1]$ for this approach
 
 | **Model**           | **Train set**     | **Validation  set** | **Test set**     | **Batch size** | **Learning rate** | **Weight decay** |
 | ------------------- | ----------------- | ------------------- | ---------------- |--------------- | ----------------- | ---------------- |
