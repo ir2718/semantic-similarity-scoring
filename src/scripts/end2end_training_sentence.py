@@ -24,7 +24,7 @@ def train_model(batch_size, lr, weight_decay, train_dataloader):
         optimizer_params={'lr': lr},
         weight_decay=weight_decay,
         warmup_steps=warmup_steps,
-        #use_amp=True,
+        use_amp=True,
         show_progress_bar=True,
         output_path=output_dir,
         save_best_model=True,

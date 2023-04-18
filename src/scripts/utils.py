@@ -114,16 +114,22 @@ def check_grad_params(model):
         if param.requires_grad:
             print(name)
 
-def compute_metrics(eval_preds):
-    output = eval_preds.predictions
-    labels = eval_preds.label_ids
+def compute_metrics_(y_true, y_pred):
     return {
-        'pearson_r': pearsonr(output.reshape(-1), labels)[0],
-        'spearman_r': spearmanr(output.reshape(-1), labels)[0]
+        'pearson_r': pearsonr(y_pred, y_true)[0],
+        'spearman_r': spearmanr(y_pred, y_true)[0]
     }
+
+def compute_metrics(eval_preds):
+    output = eval_preds.predictions.reshape(-1)
+    labels = eval_preds.label_ids
+    return compute_metrics_(labels, output)
 
 def compute_objective(eval_dict):
     return eval_dict['pearson_r']
+
+def scoring_function_pearson(y_true, y_pred):
+    return pearsonr(y_pred, y_true)[0]
 
 def load_stsb_dataset_from_disk(dataset_path):
     cols = ['dataset_type', 'dataset', 'split', 'id', 'label', 'sentence1', 'sentence2']
@@ -150,6 +156,17 @@ def load_dataset_from_huggingface(dataset_path, config_name, label_dir):
     dataset['test'] = dataset['test'].remove_columns('label')
     dataset['test'] = dataset['test'].add_column(name='label', column=test_labels['label'])
     return dataset
+
+def load_stratified_dataset(dataset_dir):
+    train_stratified = datasets.Dataset.from_pandas(pd.read_csv(os.path.join(dataset_dir, 'train_stratified.csv')))
+    validation_stratified = datasets.Dataset.from_pandas(pd.read_csv(os.path.join(dataset_dir, 'validation_stratified.csv')))
+    test_stratified = datasets.Dataset.from_pandas(pd.read_csv(os.path.join(dataset_dir, 'test_stratified.csv')))
+    dataset_dict = datasets.DatasetDict({
+        'train':train_stratified,
+        'validation':validation_stratified,
+        'test':test_stratified
+    })
+    return dataset_dict
 
 def tokenize_function(examples, **fn_kwargs):
     result = fn_kwargs['tokenizer'](

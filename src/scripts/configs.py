@@ -17,6 +17,12 @@ class FROZEN_CFG:
         FROZEN_CFG.SEED = args.seed
         FROZEN_CFG.PATIENCE = args.patience
 
+class ENSEMBLE_CFG:
+    @staticmethod
+    def set_args(args):
+        ENSEMBLE_CFG.MODEL_NAME = args.model_name
+        ENSEMBLE_CFG.SEED = args.seed
+        ENSEMBLE_CFG.NUM_MODELS = args.num_models
 
 class END2END_CFG:
     @staticmethod

@@ -13,7 +13,10 @@ FROZEN_CFG.set_args(args)
 set_seed_(FROZEN_CFG.SEED)
 device = set_device()
 
-dataset = load_dataset_from_huggingface(DATASET_PATH, CONFIG_NAME, args.dataset_path)
+if args.stratified:
+    dataset = load_stratified_dataset(args.dataset_path)
+else:
+    dataset = load_dataset_from_huggingface(DATASET_PATH, CONFIG_NAME, args.dataset_path)
 
 model_name = FROZEN_CFG.MODEL_NAME
 tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)

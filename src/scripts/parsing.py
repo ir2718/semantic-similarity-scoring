@@ -1,4 +1,5 @@
 import argparse
+import json
 
 def str2bool(x):
     if x == 'True':
@@ -29,12 +30,27 @@ def parse_fine_tune_huggingface():
     parser = _parse()
     parser.add_argument('--loss_function', type=str, default='mse') # 'mse', 'cross_entropy'
     parser.add_argument('--opt_metric', type=str, default='eval_pearson_r') # eval_spearman_r
+    parser.add_argument('--stratified', type=str2bool, default=False)
     parser.add_argument('--grad_checkpoint', type=str2bool, default=False)
     args = parser.parse_args()
     return args
 
-
 def parse_sentence_transformer():
     parser=_parse()
+    args = parser.parse_args()
+    return args
+
+def parse_ensemble():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--dataset_path', type=str, default='../dataset/stsb')
+    parser.add_argument('--loss_function', type=str, default='mse') # 'mse', 'cross_entropy', 'cosine_similarity'
+    parser.add_argument('--model_name', type=str, default='xgboost')
+    parser.add_argument('--num_models', type=int, default=2)
+    parser.add_argument('--models', type=str, nargs='+', default=['bert-base-cased', 'bert-large-cased'])
+    parser.add_argument('--save_path', type=str, default='../models/ensembles')
+    parser.add_argument('--stratified', type=str2bool, default=False)
+    parser.add_argument('--kwargs', type=json.loads)
+    parser.add_argument('--hyperopt', type=str2bool, default=True)
+    parser.add_argument('--seed', type=int, default=42)
     args = parser.parse_args()
     return args

@@ -11,7 +11,10 @@ args = parse_fine_tune_huggingface()
 END2END_CFG.set_args(args)
 device = set_device()
 
-dataset = load_dataset_from_huggingface(DATASET_PATH, CONFIG_NAME, args.dataset_path)
+if args.stratified:
+    dataset = load_stratified_dataset(args.dataset_path)
+else:
+    dataset = load_dataset_from_huggingface(DATASET_PATH, CONFIG_NAME, args.dataset_path)
 
 model_name = END2END_CFG.MODEL_NAME
 tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=False)
